@@ -8,5 +8,4 @@ public interface CarrinhoInterface {
     double precoCarrinho();
     void comprar(Cartao cartao);
     boolean existeItem(int cod);
-
 }

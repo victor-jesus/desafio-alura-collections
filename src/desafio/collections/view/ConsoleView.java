@@ -1,11 +1,9 @@
 package desafio.collections.view;
 
 import desafio.collections.controller.CarrinhoController;
-import desafio.collections.controller.ComprasController;
 import desafio.collections.controller.LojaController;
 import desafio.collections.model.*;
 
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class ConsoleView {
@@ -25,7 +23,7 @@ public class ConsoleView {
         Produto xboxSeriesX = new Produto("Xbox Series X", 4000, kabum);
 
         Cartao cartao = new Cartao("Itau", 55246724, 132, 10000, pessoa);
-
+        System.out.println(cartao);
         kabum.addProduto(Map.of(1, ps5Digital, 2, ps5Fisico, 3, xboxSeriesX, 4, xboxSeriesS));
 
         CarrinhoController carrinhoController = new CarrinhoController(carrinho);
@@ -35,34 +33,71 @@ public class ConsoleView {
         pessoa.setCarrinho(carrinho);
         pessoa.setCartoes(List.of(cartao));
 
-        do {
-            System.out.println("---- Digite o nome da loja que deseja entrar ----\n");
-            System.out.println("--- Lojas ----");
-            lojas.forEach(loja -> System.out.println(loja.getNome()));
-            System.out.print("Digite: ");
-            option = scanner.next();
+        System.out.println("---- Digite o nome da loja que deseja entrar ----\n");
+        System.out.println("--- Lojas ----");
+        lojas.forEach(loja -> System.out.println(loja.getNome()));
+        System.out.print("Digite: ");
+        option = scanner.nextLine();
+        Loja selectedLoja = lojaController.selectLoja(option);
 
-            Loja selectedLoja = lojaController.selectLoja(option);
+        if(selectedLoja != null){
+            do {
+                System.out.println("---- Lista de Produtos de " + selectedLoja.getNome() + " ----");
+                selectedLoja.imprimeProdutos();
 
-            System.out.println("---- Lista de Produtos ----");
-            selectedLoja.imprimeProdutos();
-            System.out.print("Digite o código do item que deseja comprar: ");
-            option = scanner.next();
-
-            Produto selectedProduto = lojaController.selectProduto(option);
-
-            carrinhoController.addItem(selectedProduto);
-            carrinhoController.imprimeCarrinho();
-
-        } while (!option.equalsIgnoreCase("Sair") || !option.equalsIgnoreCase("0"));
+                System.out.print("Digite o código do item que deseja comprar: ");
+                option = scanner.nextLine();
+                Produto selectedProduto = lojaController.selectProduto(option);
+                carrinhoController.addItem(selectedProduto);
 
 
+                System.out.println("Deseja visualizar os itens do carrinho?");
+                System.out.println("1 - Sim");
+                System.out.println("0 - Não");
+                option = scanner.nextLine();
 
-//        List<Cartao> cartoes = new ArrayList<>();
-//        cartoes.add(cartao);
-//        pessoa.setCartoes(cartoes);
-//        pessoa.setCarrinho(carrinho);
-//
-//        System.out.println(kabum);
+                System.out.println();
+                switch (option){
+                    case "1" -> carrinhoController.imprimeCarrinho();
+                    case "0" -> {}
+                    default -> System.out.println("Opção não reconhecida.");
+                }
+
+                System.out.println();
+                System.out.println("Deseja adicionar mais algum item ao carrinho?");
+                System.out.println("1 - Sim");
+                System.out.println("0 - Não");
+                option = scanner.nextLine();
+
+                switch (option) {
+                    case "0" -> {
+                        if(!carrinho.getItens().isEmpty()){
+                            System.out.println("Podemos seguir com a compra?");
+                            System.out.println("1 - Sim");
+                            System.out.println("0 - Não");
+                            option = scanner.nextLine();
+                        }
+                        switch (option) {
+                            case "1" -> {
+                                option = "0";
+                                carrinhoController.comprar(cartao);
+                            }
+                            case "0" -> carrinhoController.esvaziaCarrinho();
+                            default -> System.out.println("Comando não reconhecido");
+                        }
+                    }
+                    case "1" -> System.out.println("Prosseguindo...");
+                }
+
+            } while (Integer.parseInt(option) != 0);
+        } else {
+            System.err.println("Loja não existe");
+        }
+
+        System.out.println();
+        
+        cartao.imprimeCartao();
+
+        
     }
 }

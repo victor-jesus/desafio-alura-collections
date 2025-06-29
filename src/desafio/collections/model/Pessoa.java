@@ -16,6 +16,13 @@ public class Pessoa {
         this.cartoes = cartoes;
     }
 
+    public Carrinho retornaCarrinho(Cartao cartao){
+        if(cartoes.contains(cartao)){
+            return carrinho;
+        }
+        return null;
+    }
+
     public String getNome() {
         return nome;
     }

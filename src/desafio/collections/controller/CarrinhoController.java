@@ -4,8 +4,6 @@ import desafio.collections.model.CarrinhoInterface;
 import desafio.collections.model.Cartao;
 import desafio.collections.model.Produto;
 
-import java.util.Map;
-
 public class CarrinhoController {
     CarrinhoInterface carrinho;
 

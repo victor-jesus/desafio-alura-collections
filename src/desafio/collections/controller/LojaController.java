@@ -3,7 +3,6 @@ package desafio.collections.controller;
 import desafio.collections.model.Loja;
 import desafio.collections.model.Produto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LojaController {
@@ -21,7 +20,7 @@ public class LojaController {
         return null;
     }
 
-    public Loja selectLoja(String nome){
+    public Loja selectLoja(String nome) {
         for(Loja loja: lojas){
             if(loja.getNome().equalsIgnoreCase(nome)){
                 selectedLoja = loja;

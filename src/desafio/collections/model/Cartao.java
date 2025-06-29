@@ -15,6 +15,10 @@ public class Cartao {
         this.pessoa = pessoa;
     }
 
+    public void imprimeCartao(){
+        System.out.println("Cartão do " + this.banco + "\nLimite: " + this.getLimite());
+    }
+
     public String getBanco() {
         return banco;
     }

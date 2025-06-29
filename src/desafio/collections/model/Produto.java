@@ -1,6 +1,6 @@
 package desafio.collections.model;
 
-public class Produto {
+public class Produto implements Comparable<Produto> {
     String nome;
     double valor;
     Loja loja;
@@ -29,6 +29,11 @@ public class Produto {
 
     @Override
     public String toString() {
-        return this.getNome() + ", R$" + this.getValor() + " (" + this.loja.getNome() + ")";
+        return this.getNome() + ", R$" + this.getValor() + " (" + this.loja.getNome() + ")\n";
+    }
+
+    @Override
+    public int compareTo(Produto other) {
+        return Double.compare(this.getValor(), other.getValor());
     }
 }

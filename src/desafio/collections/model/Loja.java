@@ -1,9 +1,6 @@
 package desafio.collections.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Loja {
     String nome;
@@ -20,10 +17,7 @@ public class Loja {
     }
 
     public boolean existeProduto(String nome){
-        if (this.nome.equalsIgnoreCase(nome)){
-            return true;
-        }
-        return false;
+        return this.nome.equalsIgnoreCase(nome);
     }
 
     public Map<Integer, Produto> getProdutos() {
@@ -43,7 +37,14 @@ public class Loja {
     }
 
     public void imprimeProdutos(){
-        itens.forEach((integer, produto) -> System.out.println(integer + " - " + produto.getNome() + " R$" + produto.getValor()));
+        List<Produto> produtos = new ArrayList<>();
+        for(Map.Entry<Integer, Produto> produto : itens.entrySet()){
+            produtos.add(produto.getValue());
+        }
+        produtos.sort(Comparator.comparing(Produto::getValor));
+        System.out.println(produtos);
+
+        // itens.forEach((integer, produto) -> System.out.println(integer + " - " + produto.getNome() + " R$" + produto.getValor()));
     }
 
     public void addProduto(int cod, Produto produto) {

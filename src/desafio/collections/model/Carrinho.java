@@ -17,12 +17,11 @@ public class Carrinho implements CarrinhoInterface {
         return itens;
     }
 
-
-
     @Override
     public boolean existeItem(int cod) {
         return itens.containsKey(cod);
     }
+
 
     @Override
     public void esvaziaCarrinho() {
@@ -32,9 +31,13 @@ public class Carrinho implements CarrinhoInterface {
 
     @Override
     public void addItem(Produto produto) {
-        itens.put(++id, produto);
+        if (produto != null) {
+            itens.put(++id, produto);
+            System.out.println("Item Adicionado com sucesso!");
+        } else {
+            System.out.println("Item não existe");
+        }
     }
-
     @Override
     public void removeItem(Produto produto) {
         if(itens.containsValue(produto)) {
@@ -67,14 +70,24 @@ public class Carrinho implements CarrinhoInterface {
     }
 
     @Override
+    public String toString() {
+        if(!itens.isEmpty()){
+            System.out.println("Carrinho do " + this.pessoa.getNome());
+            for(Map.Entry<Integer, Produto> itensCarrinho : itens.entrySet()){
+                return itensCarrinho.getKey() + " - " + itensCarrinho.getValue();
+            }
+        }
+
+        return "Carrinho Vazio";
+    }
+
+    @Override
     public void comprar(Cartao cartao) {
         double valorCompra = this.precoCarrinho();
         if(cartao.limite > valorCompra){
             System.out.println("Compra realizada com sucesso");
             cartao.limite -= valorCompra;
-            for(Map.Entry<Integer, Produto> itensCarrinho : itens.entrySet()){
-                itens.forEach((cod, produto) -> itens.remove(itensCarrinho.getKey()));
-            }
+            esvaziaCarrinho();
         } else {
             System.out.println("Limite insuficiente.");
             System.out.println("Limite: " + cartao.limite);
